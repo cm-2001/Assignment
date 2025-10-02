@@ -1,6 +1,8 @@
-import { ChangeDetectionStrategy, Component, inject, signal, computed } from '@angular/core';
-import { MockDataService } from '../../core/services/mock-data.service';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
+import { MockDataService } from '../../core/services/mock-data.service';
+import { CartService } from '../../core/services/cart.service';
+import { ToastService } from '../../core/services/toast.service';
 import { Product } from '../../core/models/product.model';
 
 @Component({
@@ -24,13 +26,13 @@ import { Product } from '../../core/models/product.model';
         <div class="card-header">
           <h2 class="card-title">Cart</h2>
         </div>
-        @if(cart().length === 0){
+        @if(cartService.cart().length === 0){
           <div class="empty-cart">
             <p>Your cart is empty</p>
           </div>
         } @else {
           <div class="cart-items">
-            @for(item of cart(); track item.product.id){
+            @for(item of cartService.cart(); track item.product.id){
               <div class="cart-item">
                 <div class="item-details">
                   <p class="item-name">{{ item.product.name }}</p>
@@ -45,10 +47,22 @@ import { Product } from '../../core/models/product.model';
               </div>
             }
           </div>
-          <div class="cart-total">
-            <h3 class="total-label">Total:</h3>
-            <h3 class="total-amount">{{ total() | currency:'USD' }}</h3>
+
+          <div class="summary-section">
+            <div class="summary-row">
+              <span>Subtotal</span>
+              <span>{{ cartService.subtotal() | currency:'USD' }}</span>
+            </div>
+            <div class="summary-row">
+              <span>Tax (10%)</span>
+              <span>{{ cartService.tax() | currency:'USD' }}</span>
+            </div>
+            <div class="summary-row total-row">
+              <span>Total</span>
+              <span>{{ cartService.total() | currency:'USD' }}</span>
+            </div>
           </div>
+
           <div class="cart-actions">
             <button class="clear-btn" (click)="clearCart()">Clear Cart</button>
             <button class="checkout-btn">Checkout</button>
@@ -118,16 +132,23 @@ import { Product } from '../../core/models/product.model';
       cursor: pointer;
     }
     .remove-btn { color: var(--error); }
-    .cart-total {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
+    .summary-section {
       margin-top: var(--space-lg);
       padding-top: var(--space-lg);
       border-top: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
     }
-    .total-label { font-size: 1rem; color: var(--text-secondary); }
-    .total-amount { font-size: 1.5rem; font-weight: 600; }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+    }
+    .total-row {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-top: var(--space-sm);
+    }
     .cart-actions {
       margin-top: var(--space-lg);
       display: grid;
@@ -157,39 +178,30 @@ import { Product } from '../../core/models/product.model';
 })
 export class BillingComponent {
   private dataService = inject(MockDataService);
+  cartService = inject(CartService);
+  private toastService = inject(ToastService);
+
   products = this.dataService.getProducts();
-  cart = signal<{ product: Product, quantity: number }[]>([]);
-  
-  total = computed(() => 
-    this.cart().reduce((sum, item) => sum + (item.product.price * item.quantity), 0)
-  );
 
   addToCart(product: Product) {
-    const existingItem = this.cart().find(item => item.product.id === product.id);
-    if (existingItem) {
-      this.updateQuantity(product.id, existingItem.quantity + 1);
-    } else {
-      this.cart.update(currentCart => [...currentCart, { product, quantity: 1 }]);
-    }
+    this.cartService.addToCart(product);
+    this.toastService.show(`Added ${product.name} to cart`, 'success');
   }
 
   removeFromCart(productId: string) {
-    this.cart.update(currentCart => currentCart.filter(item => item.product.id !== productId));
-  }
-
-  updateQuantity(productId: string, quantity: number) {
-    if (quantity <= 0) {
-      this.removeFromCart(productId);
-    } else {
-      this.cart.update(currentCart => 
-        currentCart.map(item => 
-          item.product.id === productId ? { ...item, quantity } : item
-        )
-      );
+    const item = this.cartService.cart().find(i => i.product.id === productId);
+    if (item) {
+        this.cartService.removeFromCart(productId);
+        this.toastService.show(`Removed ${item.product.name} from cart`, 'info');
     }
   }
 
+  updateQuantity(productId: string, quantity: number) {
+    this.cartService.updateQuantity(productId, quantity);
+  }
+
   clearCart() {
-    this.cart.set([]);
+    this.cartService.clearCart();
+    this.toastService.show('Cart cleared', 'info');
   }
 }

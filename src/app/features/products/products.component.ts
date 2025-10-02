@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject, signal, computed } from '@angular/core';
-import { MockDataService } from '../../core/services/mock-data.service';
 import { CurrencyPipe } from '@angular/common';
+import { MockDataService } from '../../core/services/mock-data.service';
+import { CartService } from '../../core/services/cart.service';
+import { ToastService } from '../../core/services/toast.service';
 import { Product } from '../../core/models/product.model';
 
 @Component({
@@ -35,7 +37,13 @@ import { Product } from '../../core/models/product.model';
                 <td>{{ product.category }}</td>
                 <td>{{ product.price | currency:'USD' }}</td>
                 <td>
-                  <button class="action-btn">Add to Cart</button>
+                  <button class="action-btn" (click)="addToCart(product)" [disabled]="getCartItemCount(product.id) > 0">
+                    @if(getCartItemCount(product.id) > 0){
+                      <span>Added ({{ getCartItemCount(product.id) }})</span>
+                    } @else {
+                      <span>Add to Cart</span>
+                    }
+                  </button>
                 </td>
               </tr>
             }
@@ -131,9 +139,15 @@ import { Product } from '../../core/models/product.model';
         border-radius: var(--rounded-md);
         cursor: pointer;
         transition: all var(--transition-fast);
+        min-width: 120px;
     }
     .action-btn:hover {
         opacity: .8;
+    }
+    .action-btn:disabled {
+      background-color: var(--background-main);
+      color: var(--text-secondary);
+      cursor: not-allowed;
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -141,6 +155,9 @@ import { Product } from '../../core/models/product.model';
 })
 export class ProductsComponent {
   private dataService = inject(MockDataService);
+  private cartService = inject(CartService);
+  private toastService = inject(ToastService);
+
   private products = this.dataService.getProducts();
 
   searchTerm = signal('');
@@ -156,4 +173,14 @@ export class ProductsComponent {
       return termMatch && categoryMatch;
     });
   });
+
+  addToCart(product: Product) {
+    this.cartService.addToCart(product);
+    this.toastService.show(`Added ${product.name} to cart`, 'success');
+  }
+
+  getCartItemCount(productId: string): number {
+    const item = this.cartService.cart().find(i => i.product.id === productId);
+    return item ? item.quantity : 0;
+  }
 }
