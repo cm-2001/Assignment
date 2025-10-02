@@ -65,7 +65,8 @@ export class LayoutComponent implements OnInit {
       const breadcrumbs = data['breadcrumbs'] || [{ label: 'Home', url: '/' }];
 
       this.browserTitle.setTitle(`${title} | Restaurant POS`);
-      this.titleService.setTitle(title, subtitle);
+      this.titleService.setTitle(title);
+      this.titleService.setSubtitle(subtitle);
       this.titleService.setBreadcrumbs(breadcrumbs);
     });
   }

@@ -1,144 +1,95 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { ChangeDetectionStrategy, Component, computed, inject, output } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { CartService } from '../../../core/services/cart.service';
 import { TitleService } from '../../../core/services/title.service';
 
 @Component({
   selector: 'app-header',
+  imports: [CommonModule],
   template: `
     <header class="header">
-        <div class="header-left">
-            <div class="breadcrumbs">
-              @for(crumb of titleService.breadcrumbs(); track crumb.label; let last = $last){
-                <a [routerLink]="crumb.url" class="breadcrumb-link">{{ crumb.label }}</a>
-                @if(!last){
-                  <span class="breadcrumb-separator">/</span>
-                }
-              }
-            </div>
-            <h1 class="page-title">{{ titleService.title() }}</h1>
-            <p class="page-subtitle">{{ titleService.subtitle() }}</p>
+      <div class="header-left">
+        <button (click)="toggleSidebar.emit()" class="menu-btn">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="title-section">
+          <h2>{{ title() }}</h2>
+          <p>{{ subtitle() }}</p>
         </div>
-        <div class="header-right">
-            <input type="text" class="search-bar" placeholder="Search...">
-            <a class="icon-button" routerLink="/billing">
-                <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M17 18a2 2 0 0 1-2 2a2 2 0 0 1-2-2c0-1.11.89-2 2-2a2 2 0 0 1 2 2M1 2h3.27l.94 2H20a1 1 0 0 1 1 1c0 .17-.05.34-.12.5l-3.58 6.47c-.34.61-1 1.03-1.75 1.03H8.1l-.9 1.63l-.03.12a.25.25 0 0 0 .25.25H19v2H7a2 2 0 0 1-2-2c0-.35.09-.68.24-.96l1.36-2.45L3 4H1V2m6 16a2 2 0 0 1-2 2a2 2 0 0 1-2-2c0-1.11.89-2 2-2a2 2 0 0 1 2 2m9-7l3-5.4A.25.25 0 0 0 20.25 4H6.83l.94 2H18v.01Z"/></svg>
-                @if(cartService.cartCount() > 0){
-                  <span class="cart-badge">{{ cartService.cartCount() }}</span>
-                }
-            </a>
-            <div class="profile-avatar">
-                <img src="https://i.pravatar.cc/40" alt="User Avatar">
-            </div>
+      </div>
+      <div class="header-right">
+        <div class="cart-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 22C9.55228 22 10 21.5523 10 21C10 20.4477 9.55228 20 9 20C8.44772 20 8 20.4477 8 21C8 21.5523 8.44772 22 9 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M20 22C20.5523 22 21 21.5523 21 21C21 20.4477 20.5523 20 20 20C19.4477 20 19 20.4477 19 21C19 21.5523 19.4477 22 20 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M1 1H5L7.68 14.39C7.77144 14.8504 8.02191 15.264 8.38755 15.5583C8.75318 15.8526 9.2107 16.009 9.68 16H19.4C19.8693 16.009 20.3268 15.8526 20.6925 15.5583C21.0581 15.264 21.3086 14.8504 21.4 14.39L23 6H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          @if (cartCount() > 0) {
+            <span class="cart-badge">{{ cartCount() }}</span>
+          }
         </div>
+      </div>
     </header>
   `,
   styles: [`
     .header {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      padding: var(--space-lg) var(--space-xl);
-      background-color: var(--background-card);
-      border-bottom: 1px solid var(--border-color);
+      justify-content: space-between;
+      padding: 1rem 1.5rem;
+      background-color: #fff;
+      border-bottom: 1px solid #e0e0e0;
     }
     .header-left {
-        flex: 1;
+      display: flex;
+      align-items: center;
     }
-    .breadcrumbs {
-      font-size: .875rem;
-      color: var(--text-secondary);
-      margin-bottom: var(--space-xs);
+    .menu-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin-right: 1rem;
     }
-    .breadcrumb-link {
-      color: var(--text-secondary);
-      text-decoration: none;
-      transition: color var(--transition-fast);
+    .title-section h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 600;
     }
-    .breadcrumb-link:hover {
-      color: var(--brand-primary);
-    }
-    .breadcrumb-separator {
-      margin: 0 var(--space-xs);
-    }
-    .page-title {
-        font-family: var(--font-heading);
-        font-size: 1.75rem;
-        font-weight: 700;
-        color: var(--text-primary);
-        margin: 0;
-    }
-    .page-subtitle {
-        font-size: 1rem;
-        color: var(--text-secondary);
-        margin: 0;
+    .title-section p {
+      margin: 0;
+      color: #666;
     }
     .header-right {
-        display: flex;
-        align-items: center;
-        gap: var(--space-lg);
+      display: flex;
+      align-items: center;
     }
-    .search-bar {
-        font-family: var(--font-body);
-        font-size: 1rem;
-        padding: var(--space-sm) var(--space-md);
-        border-radius: var(--rounded-full);
-        border: 1px solid var(--border-color);
-        background-color: var(--background-main);
-        width: 250px;
-        transition: all var(--transition-normal);
-    }
-    .search-bar:focus {
-        outline: none;
-        border-color: var(--brand-primary);
-        box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2);
-    }
-    .icon-button {
-        position: relative;
-        display: grid;
-        place-items: center;
-        width: 40px;
-        height: 40px;
-        border-radius: var(--rounded-full);
-        background-color: var(--background-main);
-        color: var(--text-secondary);
-        cursor: pointer;
-        transition: all var(--transition-normal);
-        text-decoration: none;
-    }
-    .icon-button:hover {
-        background-color: var(--brand-primary);
-        color: var(--text-light);
-    }
-    .icon {
-        width: 1.25rem;
-        height: 1.25rem;
+    .cart-icon {
+      position: relative;
+      margin-right: 1.5rem;
     }
     .cart-badge {
       position: absolute;
       top: -5px;
-      right: -5px;
-      background-color: var(--error);
-      color: var(--text-light);
+      right: -10px;
+      background-color: #f44336;
+      color: #fff;
       border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: .75rem;
-      font-weight: 600;
-    }
-    .profile-avatar img {
-        width: 40px;
-        height: 40px;
-        border-radius: var(--rounded-full);
+      padding: 0.25rem;
+      font-size: 0.75rem;
+      min-width: 20px;
+      text-align: center;
     }
   `],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink]
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent {
-  cartService = inject(CartService);
-  titleService = inject(TitleService);
+  toggleSidebar = output();
+  private cartService = inject(CartService);
+  private titleSvc = inject(TitleService);
+
+  title = this.titleSvc.title;
+  subtitle = this.titleSvc.subtitle;
+  cartCount = computed(() => this.cartService.cart().reduce((acc, item) => acc + item.quantity, 0));
 }

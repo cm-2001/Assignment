@@ -13,8 +13,11 @@ export class TitleService {
   public subtitle = signal('Welcome back!');
   public breadcrumbs = signal<Breadcrumb[]>([{ label: 'Home', url: '/' }]);
 
-  setTitle(title: string, subtitle: string) {
+  setTitle(title: string) {
     this.title.set(title);
+  }
+
+  setSubtitle(subtitle: string) {
     this.subtitle.set(subtitle);
   }
 

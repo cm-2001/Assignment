@@ -1,0 +1,60 @@
+<div class="billing-container">
+  <h2>Billing / Checkout</h2>
+
+  <div class="billing-summary-card">
+    <h3>Order Summary</h3>
+    @if (cartItems().length === 0) {
+      <p>Your cart is empty.</p>
+    } @else {
+      <ul class="item-list">
+        @for (item of cartItems(); track item.product.id) {
+          <li>
+            <span>{{ item.product.name }} x {{ item.quantity }}</span>
+            <span>{{ item.product.price * item.quantity | currency }}</span>
+          </li>
+        }
+      </ul>
+      <div class="totals">
+        <div class="total-row">
+          <span>Subtotal</span>
+          <span>{{ subtotal() | currency }}</span>
+        </div>
+        <div class="total-row">
+          <span>Tax (10%)</span>
+          <span>{{ tax() | currency }}</span>
+        </div>
+        <div class="total-row grand-total">
+          <span>Total</span>
+          <span>{{ total() | currency }}</span>
+        </div>
+      </div>
+    }
+  </div>
+
+  @if (cartItems().length > 0) {
+    <div class="payment-section-card">
+      <h3>Payment Information</h3>
+      <form (submit)="processPayment()">
+        <div class="form-group">
+          <label for="card-name">Name on Card</label>
+          <input type="text" id="card-name" name="card-name" required>
+        </div>
+        <div class="form-group">
+          <label for="card-number">Card Number</label>
+          <input type="text" id="card-number" name="card-number" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="expiry-date">Expiry Date</label>
+            <input type="text" id="expiry-date" name="expiry-date" placeholder="MM/YY" required>
+          </div>
+          <div class="form-group">
+            <label for="cvv">CVV</label>
+            <input type="text" id="cvv" name="cvv" required>
+          </div>
+        </div>
+        <button type="submit" class="pay-button">Pay Now</button>
+      </form>
+    </div>
+  }
+</div>

@@ -1,186 +1,75 @@
-import { ChangeDetectionStrategy, Component, inject, signal, computed } from '@angular/core';
-import { CurrencyPipe } from '@angular/common';
-import { MockDataService } from '../../core/services/mock-data.service';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { CartService } from '../../core/services/cart.service';
-import { ToastService } from '../../core/services/toast.service';
 import { Product } from '../../core/models/product.model';
+import { MockDataService } from '../../core/services/mock-data.service';
 
 @Component({
   selector: 'app-products',
+  imports: [CommonModule],
   template: `
-    <div class="page-card">
-      <div class="card-header">
-        <h2 class="card-title">Products</h2>
-        <div class="header-actions">
-          <input type="text" class="search-input" placeholder="Search products..." [value]="searchTerm()" (input)="searchTerm.set($event.target.value)"/>
-          <div class="filter-buttons">
-            <button class="filter-btn" [class.active]="filterCategory() === 'all'" (click)="filterCategory.set('all')">All</button>
-            <button class="filter-btn" [class.active]="filterCategory() === 'Food'" (click)="filterCategory.set('Food')">Food</button>
-            <button class="filter-btn" [class.active]="filterCategory() === 'Drinks'" (click)="filterCategory.set('Drinks')">Drinks</button>
-          </div>
+    <div class="products-grid">
+      @for (product of products(); track product.id) {
+        <div class="product-card">
+          <img [src]="product.image" [alt]="product.name">
+          <h3>{{ product.name }}</h3>
+          <p>{{ product.price | currency }}</p>
+          <button (click)="addToCart(product)">
+            Add to Cart
+          </button>
         </div>
-      </div>
-      <div class="table-container">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Category</th>
-              <th>Price</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for(product of filteredProducts(); track product.id){
-              <tr>
-                <td>{{ product.name }}</td>
-                <td>{{ product.category }}</td>
-                <td>{{ product.price | currency:'USD' }}</td>
-                <td>
-                  <button class="action-btn" (click)="addToCart(product)" [disabled]="getCartItemCount(product.id) > 0">
-                    @if(getCartItemCount(product.id) > 0){
-                      <span>Added ({{ getCartItemCount(product.id) }})</span>
-                    } @else {
-                      <span>Add to Cart</span>
-                    }
-                  </button>
-                </td>
-              </tr>
-            }
-          </tbody>
-        </table>
-      </div>
+      }
     </div>
   `,
   styles: [`
-    .page-card {
-        background-color: var(--background-card);
-        border-radius: var(--rounded-lg);
-        box-shadow: var(--shadow-sm);
-        padding: var(--space-lg);
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1rem;
     }
-    .card-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: var(--space-lg);
-        padding-bottom: var(--space-lg);
-        border-bottom: 1px solid var(--border-color);
+    .product-card {
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
     }
-    .card-title {
-        font-size: 1.5rem;
-        font-weight: 600;
-        margin: 0;
+    .product-card img {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 1rem;
     }
-    .header-actions {
-        display: flex;
-        gap: var(--space-md);
+    .product-card h3 {
+      margin: 0.5rem 0;
     }
-    .search-input {
-        font-family: var(--font-body);
-        padding: var(--space-sm) var(--space-md);
-        border-radius: var(--rounded-md);
-        border: 1px solid var(--border-color);
-        background-color: var(--background-main);
-        min-width: 250px;
+    .product-card p {
+      margin: 0.5rem 0;
+      font-weight: bold;
     }
-    .filter-buttons {
-        display: flex;
-        background-color: var(--background-main);
-        border-radius: var(--rounded-md);
-        padding: var(--space-xs);
+    .product-card button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
     }
-    .filter-btn {
-        background: transparent;
-        border: none;
-        padding: var(--space-sm) var(--space-md);
-        border-radius: var(--rounded-sm);
-        cursor: pointer;
-        font-weight: 500;
-        color: var(--text-secondary);
-        transition: all var(--transition-fast);
+    .product-card button:hover {
+      background-color: #0056b3;
     }
-    .filter-btn.active {
-        background-color: var(--background-card);
-        color: var(--brand-primary);
-        box-shadow: var(--shadow-xs);
-    }
-    .table-container {
-        overflow-x: auto;
-    }
-    .data-table {
-        width: 100%;
-        border-collapse: collapse;
-        text-align: left;
-    }
-    .data-table th, .data-table td {
-        padding: var(--space-md);
-        vertical-align: middle;
-    }
-    .data-table thead {
-        background-color: var(--background-main);
-    }
-    .data-table th {
-        font-weight: 600;
-        color: var(--text-secondary);
-        text-transform: uppercase;
-        font-size: .8rem;
-        border-bottom: 1px solid var(--border-color);
-    }
-    .data-table tbody tr {
-        border-bottom: 1px solid var(--border-color);
-    }
-    .data-table tbody tr:last-child { border: none; }
-    .action-btn {
-        background-color: var(--brand-primary);
-        color: var(--text-light);
-        border: none;
-        padding: var(--space-sm) var(--space-md);
-        border-radius: var(--rounded-md);
-        cursor: pointer;
-        transition: all var(--transition-fast);
-        min-width: 120px;
-    }
-    .action-btn:hover {
-        opacity: .8;
-    }
-    .action-btn:disabled {
-      background-color: var(--background-main);
-      color: var(--text-secondary);
+    .product-card button:disabled {
+      background-color: #ccc;
       cursor: not-allowed;
     }
   `],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CurrencyPipe]
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductsComponent {
-  private dataService = inject(MockDataService);
   private cartService = inject(CartService);
-  private toastService = inject(ToastService);
-
-  private products = this.dataService.getProducts();
-
-  searchTerm = signal('');
-  filterCategory = signal('all');
-
-  filteredProducts = computed(() => {
-    const term = this.searchTerm().toLowerCase();
-    const category = this.filterCategory();
-
-    return this.products().filter(product => {
-      const termMatch = product.name.toLowerCase().includes(term);
-      const categoryMatch = category === 'all' || product.category === category;
-      return termMatch && categoryMatch;
-    });
-  });
+  private mockDataService = inject(MockDataService);
+  products = this.mockDataService.getProducts();
 
   addToCart(product: Product) {
     this.cartService.addToCart(product);
-    this.toastService.show(`Added ${product.name} to cart`, 'success');
-  }
-
-  getCartItemCount(productId: string): number {
-    const item = this.cartService.cart().find(i => i.product.id === productId);
-    return item ? item.quantity : 0;
   }
 }
