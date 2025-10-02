@@ -8,48 +8,45 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
     <nav class="sidebar-nav">
       <div class="logo">
         <a routerLink="/">
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="var(--brand-primary)"/>
-            <path d="M12 11.55C9.64 9.35 6.48 8 3 8v1.5c3.54 0 6.6 2.36 7.95 5.45C11.32 13.65 11 12.85 11 12c0-.55.12-1.08.34-1.57C11.56 10.15 11.78 9.85 12 9.55c.22-.3.44-.6.66-.88.22-.28.46-.55.71-.8.25-.25.51-.48.78-.7.27-.22.56-.43.85-.62.29-.19.6-.37.91-.53.31-.16.63-.3.96-.42.33-.12.67-.22 1.01-.3.34-.08.69-.14 1.04-.18.35-.04.7-.06 1.06-.06v-1.5c-3.48 0-6.64 1.35-8.99 3.55z" fill="var(--brand-primary)"/>
-        </svg>
+            <svg fill="none" height="48" viewBox="0 0 48 48" width="48" xmlns="http://www.w3.org/2000/svg"><path d="M24 6c-9.94 0-18 8.06-18 18s8.06 18 18 18 18-8.06 18-18S33.94 6 24 6Z" fill="#22c55e"/><path d="M31.5 16.5c-2.49 0-4.5 2.01-4.5 4.5s2.01 4.5 4.5 4.5 4.5-2.01 4.5-4.5-2.01-4.5-4.5-4.5Zm0 6c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5Z" fill="#fff"/><path d="M16.5 25.5c-2.49 0-4.5 2.01-4.5 4.5s2.01 4.5 4.5 4.5 4.5-2.01 4.5-4.5-2.01-4.5-4.5-4.5Zm0 6c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5Z" fill="#fff"/><path d="M24 3C12.95 3 3 12.95 3 24s9.95 21 21 21 21-9.95 21-21S35.05 3 24 3Zm0 36c-8.28 0-15-6.72-15-15S15.72 9 24 9s15 6.72 15 15-6.72 15-15 15Zm-6-16.5c0-1.93 1.57-3.5 3.5-3.5s3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5-3.5-1.57-3.5-3.5Zm12.5-3c-1.93 0-3.5 1.57-3.5 3.5s1.57 3.5 3.5 3.5 3.5-1.57 3.5-3.5-1.57-3.5-3.5-3.5Z" fill="#16a34a"/></svg>
           <span class="logo-text">Restau POS</span>
         </a>
       </div>
       <ul>
         <li>
           <a routerLink="/dashboard" routerLinkActive="active">
-            <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z" /></svg>
+            <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
             <span>Dashboard</span>
           </a>
         </li>
         <li>
           <a routerLink="/products" routerLinkActive="active">
-            <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M18,6H16V4A2,2 0 0,0 14,2H10A2,2 0 0,0 8,4V6H6A2,2 0 0,0 4,8V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8A2,2 0 0,0 18,6M10,4H14V6H10V4Z" /></svg>
+            <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M18 6h-2V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 4v2H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2zm-6-2h4v2h-4V4zm6 14H6V8h2v2h8V8h2v12z"/></svg>
             <span>Products</span>
           </a>
         </li>
         <li>
           <a routerLink="/orders" routerLinkActive="active">
-            <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M19.5,3.5L18,2L14.5,5.5L11,2L9.5,3.5L13,7L9.5,10.5L11,12L14.5,8.5L18,12L19.5,10.5L16,7L19.5,3.5M17.5,14H6.5A2.5,2.5 0 0,0 4,16.5A2.5,2.5 0 0,0 6.5,19H17.5A2.5,2.5 0 0,0 20,16.5A2.5,2.5 0 0,0 17.5,14M6.5,17.5A1,1 0 0,1 5.5,16.5A1,1 0 0,1 6.5,15.5H17.5A1,1 0 0,1 18.5,16.5A1,1 0 0,1 17.5,17.5H6.5Z" /></svg>
+            <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M7 15h7v2H7v-2zm0-4h10v2H7v-2zm0-4h10v2H7V7zm12 4h-2V9h2v2zm0-4h-2V5h2v2zm-2 8h2v-2h-2v2zM4 22H2V4h2v18z"/></svg>
             <span>Orders</span>
           </a>
         </li>
         <li>
           <a routerLink="/customers" routerLinkActive="active">
-            <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z" /></svg>
+            <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
             <span>Customers</span>
           </a>
         </li>
         <li>
           <a routerLink="/billing" routerLinkActive="active">
-            <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M20,8H4V6H20V8M20,12H4V10H20V12M20,16H4V14H20V16M22,4H2A2,2 0 0,0 0,6V18A2,2 0 0,0 2,20H22A2,2 0 0,0 24,18V6A2,2 0 0,0 22,4Z" /></svg>
+            <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M20 8H4V6h16v2zm-2 6H6v-2h12v2zm4-10H2C.9 4 0 4.9 0 6v12c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM5 12H3v-2h2v2zm0-4H3V6h2v2z"/></svg>
             <span>Billing</span>
           </a>
         </li>
       </ul>
       <div class="sidebar-footer">
         <a routerLink="/settings" routerLinkActive="active">
-            <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8M12,10A2,2 0 0,0 10,12A2,2 0 0,0 12,14A2,2 0 0,0 14,12A2,2 0 0,0 12,10M12,2C15.87,2 19.11,3.26 21.36,5.64L19.95,7.05C18.1,5.08 15.2,4 12,4C8.8,4 5.9,5.08 4.05,7.05L2.64,5.64C4.89,3.26 8.13,2 12,2M12,20C15.2,20 18.1,18.92 19.95,16.95L21.36,18.36C19.11,20.74 15.87,22 12,22C8.13,22 4.89,20.74 2.64,18.36L4.05,16.95C5.9,18.92 8.8,20 12,20Z" /></svg>
+            <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69-.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59-1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg>
             <span>Settings</span>
         </a>
       </div>
@@ -58,33 +55,32 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   styles: [`
     :host {
       display: block;
-      width: 260px;
+      width: 280px;
       background: var(--background-card);
       color: var(--text-primary);
       height: 100vh;
-      box-shadow: var(--shadow-md);
+      box-shadow: var(--shadow-lg);
       display: flex;
       flex-direction: column;
       border-right: 1px solid var(--border-color);
+      padding: var(--space-xl) var(--space-lg);
     }
     .sidebar-nav {
       display: flex;
       flex-direction: column;
       height: 100%;
-      padding: var(--space-lg) var(--space-md);
     }
     .logo {
-      margin-bottom: var(--space-xl);
-      padding-inline: var(--space-sm);
+      margin-bottom: var(--space-2xl);
     }
     .logo a {
       display: flex;
       align-items: center;
-      gap: var(--space-sm);
+      gap: var(--space-md);
       color: var(--text-primary);
-      font-size: 1.5rem;
+      font-size: 1.8rem;
       font-family: var(--font-heading);
-      font-weight: 700;
+      font-weight: 800;
       text-decoration: none;
     }
     .logo .logo-text {
@@ -95,34 +91,40 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
     ul {
       list-style-type: none;
       flex-grow: 1;
+      padding: 0;
     }
     li {
-      margin-bottom: var(--space-sm);
+      margin-bottom: var(--space-md);
     }
     a {
       display: flex;
       align-items: center;
-      gap: var(--space-md);
-      padding: var(--space-sm) var(--space-md);
+      gap: var(--space-lg);
+      padding: var(--space-md) var(--space-lg);
       color: var(--text-secondary);
       text-decoration: none;
-      border-radius: var(--rounded-md);
+      border-radius: var(--rounded-lg);
       transition: all var(--transition-normal);
-      font-weight: 500;
+      font-weight: 600;
+      font-size: 1.1rem;
     }
     a:hover {
-      background-color: var(--background-main);
+      background-color: var(--background-hover);
       color: var(--brand-primary);
     }
     a.active {
-      background-color: var(--brand-primary);
-      color: var(--text-light);
-      font-weight: 600;
-      box-shadow: var(--shadow-sm);
+      background: var(--brand-primary);
+      color: #fff;
+      box-shadow: var(--shadow-md);
+    }
+    a.active .icon {
+        color: #fff;
     }
     .icon {
-      width: 1.5rem;
-      height: 1.5rem;
+      width: 1.8rem;
+      height: 1.8rem;
+      color: var(--text-secondary);
+      transition: color var(--transition-fast);
     }
     .sidebar-footer {
         margin-top: auto;
