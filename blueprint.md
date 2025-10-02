@@ -73,3 +73,25 @@ Each page of the application was systematically overhauled to align with the new
     - **Organization:** The form is divided into logical sections ("Restaurant Profile" and "Notification Settings") with clear headings.
     - **Form Styling:** All inputs, labels, and buttons are styled according to the design system.
     - **Interactive Elements:** A modern toggle switch was implemented for enabling/disabling email notifications.
+
+### 4. Advanced Header & Navigation System
+To improve user experience and navigation context, the header and routing system were significantly enhanced.
+
+- **Dynamic Title Service (`title.service.ts`):**
+    - A new singleton service was created to manage the page's title, subtitle, and breadcrumbs using Angular Signals. This allows any component to reactively update the header's content.
+
+- **Route-Driven Content:**
+    - The `app.routes.ts` file was updated to include a `data` object for each route, containing the `title`, `subtitle`, and `breadcrumb` path. This centralizes the header content and links it directly to the application's structure.
+
+- **Dynamic Header Component (`header.component.ts`):**
+    - The header was refactored to inject the `TitleService` and display the dynamic title, subtitle, and breadcrumbs. The hardcoded text was removed entirely.
+
+- **Browser Title Updates (`layout.component.ts`):**
+    - The main layout component now injects Angular's `Title` service. It listens to router events and automatically updates the browser tab's title on every successful navigation, improving SEO and user orientation (e.g., "Products | Restaurant POS").
+
+- **Breadcrumbs UI:**
+    - The header now renders a breadcrumb trail (e.g., "Home / Products"), providing users with a clear understanding of their location within the application.
+
+- **Type Safety & Fallbacks:**
+    - A `RouteData` interface was created to ensure all route definitions are strongly typed.
+    - Fallback logic was implemented in the `layout.component.ts` to ensure the header always displays a sensible default title if route data is missing.
