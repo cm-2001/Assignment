@@ -1,54 +1,130 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, computed } from '@angular/core';
 import { MockDataService } from '../../core/services/mock-data.service';
+import { Customer } from '../../core/models/customer.model';
 
 @Component({
   selector: 'app-customers',
   template: `
-    <div class="customer-list">
-      <h2>Customer List</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for(customer of customers(); track customer.id){
+    <div class="page-card">
+      <div class="card-header">
+        <h2 class="card-title">Customers</h2>
+        <div class="header-actions">
+          <input type="text" class="search-input" placeholder="Search customers..." [value]="searchTerm()" (input)="searchTerm.set($event.target.value)"/>
+        </div>
+      </div>
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
             <tr>
-              <td>{{ customer.name }}</td>
-              <td>{{ customer.email }}</td>
-              <td>{{ customer.phone }}</td>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Actions</th>
             </tr>
-          }
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            @for(customer of filteredCustomers(); track customer.id){
+              <tr>
+                <td>{{ customer.name }}</td>
+                <td>{{ customer.email }}</td>
+                <td>{{ customer.phone }}</td>
+                <td>
+                  <button class="action-btn edit-btn">Edit</button>
+                  <button class="action-btn delete-btn">Delete</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
     </div>
   `,
   styles: [`
-    .customer-list {
-      padding: 20px;
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    .page-card {
+        background-color: var(--background-card);
+        border-radius: var(--rounded-lg);
+        box-shadow: var(--shadow-sm);
+        padding: var(--space-lg);
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--space-lg);
+        padding-bottom: var(--space-lg);
+        border-bottom: 1px solid var(--border-color);
     }
-    th, td {
-      padding: 12px;
-      text-align: left;
-      border-bottom: 1px solid #eee;
+    .card-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 0;
     }
-    th {
-      background-color: #f8f8f8;
+    .header-actions {
+        display: flex;
+        gap: var(--space-md);
+    }
+    .search-input {
+        font-family: var(--font-body);
+        padding: var(--space-sm) var(--space-md);
+        border-radius: var(--rounded-md);
+        border: 1px solid var(--border-color);
+        background-color: var(--background-main);
+        min-width: 250px;
+    }
+    .table-container {
+        overflow-x: auto;
+    }
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+    }
+    .data-table th, .data-table td {
+        padding: var(--space-md);
+        vertical-align: middle;
+    }
+    .data-table thead {
+        background-color: var(--background-main);
+    }
+    .data-table th {
+        font-weight: 600;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        font-size: .8rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .data-table tbody tr {
+        border-bottom: 1px solid var(--border-color);
+    }
+    .data-table tbody tr:last-child { border: none; }
+    .action-btn {
+        border: none;
+        padding: var(--space-sm) var(--space-md);
+        border-radius: var(--rounded-md);
+        cursor: pointer;
+        transition: all var(--transition-fast);
+        margin-right: var(--space-sm);
+    }
+    .action-btn:hover { opacity: .8; }
+    .edit-btn {
+        background-color: var(--brand-primary);
+        color: var(--text-light);
+    }
+    .delete-btn {
+        background-color: var(--error);
+        color: var(--text-light);
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CustomersComponent {
   private dataService = inject(MockDataService);
-  customers = this.dataService.getCustomers();
+  private customers = this.dataService.getCustomers();
+
+  searchTerm = signal('');
+
+  filteredCustomers = computed(() => {
+    const term = this.searchTerm().toLowerCase();
+    return this.customers().filter((customer: Customer) => customer.name.toLowerCase().includes(term) || customer.email.toLowerCase().includes(term));
+  });
 }

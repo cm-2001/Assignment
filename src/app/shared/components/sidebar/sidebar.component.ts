@@ -9,11 +9,10 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
       <div class="logo">
         <a routerLink="/">
           <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M2 7L12 12L22 7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M12 12V22" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <span>Admin</span>
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="var(--brand-primary)"/>
+            <path d="M12 11.55C9.64 9.35 6.48 8 3 8v1.5c3.54 0 6.6 2.36 7.95 5.45C11.32 13.65 11 12.85 11 12c0-.55.12-1.08.34-1.57C11.56 10.15 11.78 9.85 12 9.55c.22-.3.44-.6.66-.88.22-.28.46-.55.71-.8.25-.25.51-.48.78-.7.27-.22.56-.43.85-.62.29-.19.6-.37.91-.53.31-.16.63-.3.96-.42.33-.12.67-.22 1.01-.3.34-.08.69-.14 1.04-.18.35-.04.7-.06 1.06-.06v-1.5c-3.48 0-6.64 1.35-8.99 3.55z" fill="var(--brand-primary)"/>
+        </svg>
+          <span class="logo-text">Restau POS</span>
         </a>
       </div>
       <ul>
@@ -59,62 +58,67 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   styles: [`
     :host {
       display: block;
-      width: 240px;
-      background: #1a202c; /* Dark background */
-      color: #e2e8f0; /* Light text */
+      width: 260px;
+      background: var(--background-card);
+      color: var(--text-primary);
       height: 100vh;
-      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+      box-shadow: var(--shadow-md);
       display: flex;
       flex-direction: column;
+      border-right: 1px solid var(--border-color);
     }
     .sidebar-nav {
       display: flex;
       flex-direction: column;
       height: 100%;
-      padding: 1.5rem 1rem;
+      padding: var(--space-lg) var(--space-md);
     }
     .logo {
-      margin-bottom: 2rem;
-      text-align: center;
+      margin-bottom: var(--space-xl);
+      padding-inline: var(--space-sm);
     }
     .logo a {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 0.75rem;
-      color: #fff;
-      font-size: 1.25rem;
+      gap: var(--space-sm);
+      color: var(--text-primary);
+      font-size: 1.5rem;
+      font-family: var(--font-heading);
       font-weight: 700;
       text-decoration: none;
     }
+    .logo .logo-text {
+        background: -webkit-linear-gradient(45deg, var(--brand-primary), var(--accent-gold));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
     ul {
       list-style-type: none;
-      padding: 0;
-      margin: 0;
       flex-grow: 1;
     }
     li {
-      margin-bottom: 0.5rem;
+      margin-bottom: var(--space-sm);
     }
     a {
       display: flex;
       align-items: center;
-      gap: 1rem;
-      padding: 0.75rem 1rem;
-      color: #a0aec0; /* Lighter text for links */
+      gap: var(--space-md);
+      padding: var(--space-sm) var(--space-md);
+      color: var(--text-secondary);
       text-decoration: none;
-      border-radius: 6px;
-      transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+      border-radius: var(--rounded-md);
+      transition: all var(--transition-normal);
       font-weight: 500;
     }
     a:hover {
-      background-color: #2d3748; /* Slightly lighter dark on hover */
-      color: #fff;
+      background-color: var(--background-main);
+      color: var(--brand-primary);
     }
     a.active {
-      background-color: #4a5568; /* Active link background */
-      color: #fff;
+      background-color: var(--brand-primary);
+      color: var(--text-light);
       font-weight: 600;
+      box-shadow: var(--shadow-sm);
     }
     .icon {
       width: 1.5rem;

@@ -7,33 +7,32 @@ import { SidebarComponent } from '../shared/components/sidebar/sidebar.component
   selector: 'app-layout',
   template: `
     <div class="layout">
-      <app-sidebar class="sidebar" />
+      <app-sidebar />
       <main class="main-content">
         <app-header />
-        <div class="content">
+        <div class="content-wrapper">
           <router-outlet />
         </div>
       </main>
     </div>
   `,
   styles: [`
+    :host {
+        display: block;
+    }
     .layout {
       display: flex;
       height: 100vh;
-    }
-    .sidebar {
-      width: 250px;
-      background-color: #f4f4f4;
+      background-color: var(--background-main);
     }
     .main-content {
       flex: 1;
       display: flex;
       flex-direction: column;
-    }
-    .content {
-      padding: 20px;
-      flex: 1;
       overflow-y: auto;
+    }
+    .content-wrapper {
+      padding: var(--space-xl);
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,

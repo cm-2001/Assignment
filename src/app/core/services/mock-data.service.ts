@@ -15,10 +15,10 @@ export class MockDataService {
   ]);
 
   private products = signal<Product[]>([
-    { id: '1', name: 'Burger', price: 12, category: 'Food' },
-    { id: '2', name: 'Fries', price: 5, category: 'Food' },
-    { id: '3', name: 'Soda', price: 3, category: 'Drinks' },
-    { id: '4', name: 'Salad', price: 10, category: 'Food' },
+    { id: '1', name: 'Burger', price: 12, category: 'Food', sales: 150 },
+    { id: '2', name: 'Fries', price: 5, category: 'Food', sales: 250 },
+    { id: '3', name: 'Soda', price: 3, category: 'Drinks', sales: 500 },
+    { id: '4', name: 'Salad', price: 10, category: 'Food', sales: 75 },
   ]);
 
   private customers = signal<Customer[]>([

@@ -1,50 +1,139 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, computed } from '@angular/core';
 import { MockDataService } from '../../core/services/mock-data.service';
 import { CurrencyPipe } from '@angular/common';
+import { Product } from '../../core/models/product.model';
 
 @Component({
   selector: 'app-products',
   template: `
-    <div class="product-list">
-      <h2>Product List</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Price</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for(product of products(); track product.id){
+    <div class="page-card">
+      <div class="card-header">
+        <h2 class="card-title">Products</h2>
+        <div class="header-actions">
+          <input type="text" class="search-input" placeholder="Search products..." [value]="searchTerm()" (input)="searchTerm.set($event.target.value)"/>
+          <div class="filter-buttons">
+            <button class="filter-btn" [class.active]="filterCategory() === 'all'" (click)="filterCategory.set('all')">All</button>
+            <button class="filter-btn" [class.active]="filterCategory() === 'Food'" (click)="filterCategory.set('Food')">Food</button>
+            <button class="filter-btn" [class.active]="filterCategory() === 'Drinks'" (click)="filterCategory.set('Drinks')">Drinks</button>
+          </div>
+        </div>
+      </div>
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
             <tr>
-              <td>{{ product.name }}</td>
-              <td>{{ product.category }}</td>
-              <td>{{ product.price | currency:'USD' }}</td>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Actions</th>
             </tr>
-          }
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            @for(product of filteredProducts(); track product.id){
+              <tr>
+                <td>{{ product.name }}</td>
+                <td>{{ product.category }}</td>
+                <td>{{ product.price | currency:'USD' }}</td>
+                <td>
+                  <button class="action-btn">Add to Cart</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
     </div>
   `,
   styles: [`
-    .product-list {
-      padding: 20px;
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    .page-card {
+        background-color: var(--background-card);
+        border-radius: var(--rounded-lg);
+        box-shadow: var(--shadow-sm);
+        padding: var(--space-lg);
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--space-lg);
+        padding-bottom: var(--space-lg);
+        border-bottom: 1px solid var(--border-color);
     }
-    th, td {
-      padding: 12px;
-      text-align: left;
-      border-bottom: 1px solid #eee;
+    .card-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 0;
     }
-    th {
-      background-color: #f8f8f8;
+    .header-actions {
+        display: flex;
+        gap: var(--space-md);
+    }
+    .search-input {
+        font-family: var(--font-body);
+        padding: var(--space-sm) var(--space-md);
+        border-radius: var(--rounded-md);
+        border: 1px solid var(--border-color);
+        background-color: var(--background-main);
+        min-width: 250px;
+    }
+    .filter-buttons {
+        display: flex;
+        background-color: var(--background-main);
+        border-radius: var(--rounded-md);
+        padding: var(--space-xs);
+    }
+    .filter-btn {
+        background: transparent;
+        border: none;
+        padding: var(--space-sm) var(--space-md);
+        border-radius: var(--rounded-sm);
+        cursor: pointer;
+        font-weight: 500;
+        color: var(--text-secondary);
+        transition: all var(--transition-fast);
+    }
+    .filter-btn.active {
+        background-color: var(--background-card);
+        color: var(--brand-primary);
+        box-shadow: var(--shadow-xs);
+    }
+    .table-container {
+        overflow-x: auto;
+    }
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+    }
+    .data-table th, .data-table td {
+        padding: var(--space-md);
+        vertical-align: middle;
+    }
+    .data-table thead {
+        background-color: var(--background-main);
+    }
+    .data-table th {
+        font-weight: 600;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        font-size: .8rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .data-table tbody tr {
+        border-bottom: 1px solid var(--border-color);
+    }
+    .data-table tbody tr:last-child { border: none; }
+    .action-btn {
+        background-color: var(--brand-primary);
+        color: var(--text-light);
+        border: none;
+        padding: var(--space-sm) var(--space-md);
+        border-radius: var(--rounded-md);
+        cursor: pointer;
+        transition: all var(--transition-fast);
+    }
+    .action-btn:hover {
+        opacity: .8;
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -52,5 +141,19 @@ import { CurrencyPipe } from '@angular/common';
 })
 export class ProductsComponent {
   private dataService = inject(MockDataService);
-  products = this.dataService.getProducts();
+  private products = this.dataService.getProducts();
+
+  searchTerm = signal('');
+  filterCategory = signal('all');
+
+  filteredProducts = computed(() => {
+    const term = this.searchTerm().toLowerCase();
+    const category = this.filterCategory();
+
+    return this.products().filter(product => {
+      const termMatch = product.name.toLowerCase().includes(term);
+      const categoryMatch = category === 'all' || product.category === category;
+      return termMatch && categoryMatch;
+    });
+  });
 }
