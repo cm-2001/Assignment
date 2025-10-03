@@ -30,7 +30,7 @@ export class MockDataService {
       price: 15.99,
       category: 'Main Course',
       sales: 180,
-      image: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48ZyBmaWxsPSJub25lIiBzdHJva2U9IiM2NjMiIHN0cm9rZS13aWR0aD0iMyI+PHBhdGggZD0iTTIwIDcwaDYwYTEwIDEwIDAgMCAwIDAtMjBoLTYwYTEwIDEwIDAgMCAwIDAgMjB6Ii8+PHBhdGggZD0iTTMwIDYwaDQwIi8+PHBhdGggZD0iTTMwIDUwYzEwLTcgMzAtNyA0MCAwIi8+PHBhdGggZD0iTTMwIDM1aDQwIi8+PHBhdGggZD0iTTIwIDMwaDYwYTEwIDEwIDAgMCAxIDAgMjBoLTYwYTEwIDEwIDAgMCAxIDAtMjB6Ii8+PC9nPjwvc3ZnPg==',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQG1xItIGKAEOZ3ww3qOWlHFKmWHmI3eZMnQ&s',
       description: 'A juicy, handcrafted Angus beef patty with fresh lettuce, tomatoes, and our secret sauce.'
     },
     {
@@ -39,7 +39,7 @@ export class MockDataService {
       price: 6.99,
       category: 'Side Dish',
       sales: 320,
-      image: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48ZyBmaWxsPSJub25lIiBzdHJva2U9IiM2NjMiIHN0cm9rZS13aWR0aD0iMyI+PHBhdGggZD0iTTMwIDgwaDQwbC01LTUwaC0zMGwtNSA1MHoiLz48cGF0aCBkPSJNNCAyMGw1IDYwbDIwLTEweiIvPjxwYXRoIGQ9Ik0zNSA0MGwxMCA0MCIvPjxwYXRoIGQ9Ik01MCAzMGwxMCA1MCIvPjxwYXRoIGQ9Ik02NSA0MGwxMCA0MCIvPjxwYXRoIGQ9Ik04MCAyMGwtMjAgNDBsNSAyMHoiLz48L2c+PC9zdmc+',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1lO_JzluHozmMKaIFpxdCSo-O5SX13x2ZMA&s',
       description: 'Perfectly seasoned, crispy golden fries, cooked to perfection. The perfect side for any meal.'
     },
     {
@@ -48,7 +48,7 @@ export class MockDataService {
       price: 4.50,
       category: 'Beverage',
       sales: 550,
-      image: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48ZyBmaWxsPSJub25lIiBzdHJva2U9IiM2NjMiIHN0cm9rZS13aWR0aD0iMyI+PHBhdGggZD0iTTQwIDIwaDIwbDEwIDYwaC00MGwxMC02MHoiLz48cGF0aCBkPSJNMzAgMjBoNDAiLz48L2c+PC9zdmc+',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZoebPfGhunpAJxD0aeKVqZ-vfpnBTv-vTBQ&s',
       description: 'A refreshing, bubbly soda made with natural flavors and real cane sugar.'
     },
     {
@@ -57,7 +57,7 @@ export class MockDataService {
       price: 12.50,
       category: 'Salad',
       sales: 95,
-      image: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48ZyBmaWxsPSJub25lIiBzdHJva2U9IiM2NjMiIHN0cm9rZS13aWR0aD0iMyI+PHBhdGggZD0iTTIwIDgwYy0xMC0yMCg3MC0yMCA2MCAwaC02MHoiLz48cGF0aCBkPSJNNjAgODBMMzAgNDBjLTE1IDE1LTIwIDM1IDAgNDBjMjAgNSAyNSA1IDMwIDB6Ii8+PHBhdGggZD0iTTcwIDgwYzEwLTIwLTEwLTQwLTI1LTQwIi8+PC9nPjwvc3ZnPg==',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcXVQQDgaxZPH6YK6Kad4xnLf_RtKGV33KPg&s',
       description: 'A fresh mix of organic greens, cherry tomatoes, cucumbers, and a light vinaigrette dressing.'
     }
   ]);
